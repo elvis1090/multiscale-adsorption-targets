@@ -28,3 +28,7 @@ using Ipopt solver with ma27 linear solver from the HSL Mathematical Software Li
 All plot for the paper were made using Matplotlib in Python. Once the data for the plots are 
 generated using the MATLAB and Python scripts as described above, the Jupyter notebook 
 adsorption-paper-plots.ipynb may be used to readily plot and view the results of the analysis.
+
+## License
+
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-nd/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-nd/4.0/">Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International License</a>.
