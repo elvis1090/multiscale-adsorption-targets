@@ -1,10 +1,14 @@
 # multiscale-adsorption-targets
 
 ## Material property targets for emerging nanomaterials to enable point-of-use and point-of-entry water treatment systems
-### Elvis A. Eugene, William A. Phillip, Alexander W. Dowling
-#### Department of Chemical and Biomolecular Engineering
-#### University of Notre Dame, Notre Dame, IN 46556
 
+Elvis A. Eugene, William A. Phillip, Alexander W. Dowling
+
+Department of Chemical and Biomolecular Engineering
+
+University of Notre Dame, Notre Dame, IN 46556
+
+https://chemrxiv.org/articles/Material_Property_Targets_for_Emerging_Nanomaterials_to_Enable_Point-of-Use_and_Point-of-Entry_Water_Treatment_Systems/12526190/1
 
 ## Primary analysis of results in the paper:
 
