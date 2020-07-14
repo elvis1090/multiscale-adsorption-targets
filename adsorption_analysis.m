@@ -196,6 +196,40 @@ function adsorption_analysis(v_total,t_total,t_regen,module_mass,dname)
             end
         end
         
+        %% Fit Langmuir isotherm for arsenic adsorbent HAX1 
+        % Nonlinear regression for isotherm
+        disp('Nonlinear regression for HAX1 Isotherm');
+        
+        % test change read isotherm data and extract into meaningful variables
+        % ref: Fig 1C of paper with doi:
+        % http://dx.doi.org/10.1016/j.scitotenv.2017.05.126
+        dat_hax1 = readmatrix('arsenic_data_fisotherm.csv');      
+        c_iso_hax1 = dat_hax1(:,1); % mM
+        q_iso_hax1 = dat_hax1(:,2); %[mmol/g_membrane]
+        
+        q_pass = q_iso_hax1;
+        c_pass = c_iso_hax1;
+        NL_reg = @(z) isotherm_regression(z,q_pass,c_pass);
+
+        %Initial guesses for Q and K are 0
+        guess = [0 0];
+
+        %Fit nonlinear regression parameters using fminsearch(), i.e. solve an 
+        %unconstrained nonlinear optimization problem.
+        z = fminsearch(NL_reg,guess);
+
+        %Save and display results
+        Q_NL = z(2);
+        K_NL = z(1);
+        disp('HAX Nonlinear Model:');
+        disp(['Q=',num2str(Q_NL),'(mmol/g_membrane)']);
+        disp(['K=',num2str(K_NL),'(l/mmol)']);
+        disp(' ');
+
+        csvwrite(strcat(dname,'/Q_fit_hax1.csv'),Q_NL);
+        csvwrite(strcat(dname,'/K_fit_hax1.csv'),K_NL);
+        csvwrite(strcat(dname,'/c_iso_hax1.csv'),c_iso_hax1);
+        csvwrite(strcat(dname,'/q_iso_hax1.csv'),q_iso_hax1);
         
         %% Calculate dimensionless properties for arsenic case study
         calc_dmlss_props(dname);
