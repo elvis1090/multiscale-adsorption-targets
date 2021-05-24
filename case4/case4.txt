@@ -1,2 +1,0 @@
-data generated during the execution of case 4 of run_adsorption_analysis.m and it's plots generated using adsorption-paper-plots.ipynb will be saved 
-in this directory
