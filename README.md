@@ -1,6 +1,6 @@
 # multiscale-adsorption-targets
 
-## Material property targets for emerging nanomaterials to enable point-of-use and point-of-entry water treatment systems
+## Material property targets to enable adsorptive water treatment and resource recovery systems
 
 Elvis A. Eugene, William A. Phillip, Alexander W. Dowling
 
@@ -8,30 +8,20 @@ Department of Chemical and Biomolecular Engineering
 
 University of Notre Dame, Notre Dame, IN 46556
 
-https://chemrxiv.org/articles/Material_Property_Targets_for_Emerging_Nanomaterials_to_Enable_Point-of-Use_and_Point-of-Entry_Water_Treatment_Systems/12526190/1
-
-## Primary analysis of results in the paper:
-
-The primary code for this analysis is written using MATLAB. 
-The execution of the scripts is initiated by running run_adsorption_analysis.m
-If only part of the analysis needs to be run, the user may do so by modifying the 
-variable 'cases' in run_adsorption_analysis.m 
-Extensive comments are provided in the scripts for Case definitions and their selection. 
-Comments are also provided in all the functions to enable customization.
+## Model function
 
 
-## Capacity upper bound curves
+## Pb remediation case study
+```multiscale_adsorption_target_models.py``` contains the model and workflow functions necessary to generate the results and figures in this manuscript.
 
-The capcity upper bound curves were calculated using an optimization problem modeled using 
-the Pyomo package in Python. The scripts for capcity upper bound calculation are pyo_q_ub_curve_init.py 
-and pyo_q_ub_curve_opt.py. For accurate results, the user is recommended to run the scripts
-using Ipopt solver with ma27 linear solver from the HSL Mathematical Software Library.
+## Li recovery case study
+```Li_recovery.ipynb``` contains the scripts to generate results and figures for the Li recovery case study in the manuscript. This script uses the data file 'lithium_adsorbents_2.csv' to load properties of existing adsorbents.
 
+## Scale up behavior of batch and semicontinuous processes
+```scaleup_behavior.ipynb``` contains the scripts to generate results and figures for the study of scale up behavior of batch and semicontinuous processes.
 
-## Plots
-All plot for the paper were made using Matplotlib in Python. Once the data for the plots are 
-generated using the MATLAB and Python scripts as described above, the Jupyter notebook 
-adsorption-paper-plots.ipynb may be used to readily plot and view the results of the analysis.
+## Dimensionless material property targets
+```Dimensionless_MPT.ipynb``` contains the scripts to generate results and figures for dimensionless material property target contours in the Supporting Information of the manuscript.
 
 ## License
 

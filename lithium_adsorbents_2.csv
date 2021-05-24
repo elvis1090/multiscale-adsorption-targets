@@ -1,0 +1,10 @@
+﻿Legend,Name,K,[paper_units],Q,[paper_units],K [cm3/mmol_Li],Q [mmol_Li/cm3_ads],Citation,DOI,Remarks
+a,Photoresponsive lithium ion imprinted polymer (P-IIP),0.005,[l/mg],5070.1,[micromol/g],3.47E+01,5.07E+00,Chemical Engineering Journal 378 (2019) 122084,https://doi.org/10.1016/j.cej.2019.122084,"1. Bill, I need help writing the detailed name of this membrane"
+b,Lithium-ion imprinted polymers (LIPs) decorated on the surface of MWCNTs,0.0085,[l/mg],2000,[micromol/g],5.90E+01,2.00E+00,Journal of Cleaner Production 205 (2018) 201e209,https://doi.org/10.1016/j.jclepro.2018.09.076,"1. Is the name detailed enough? If no, I will need help writing the detailed name"
+c,H2TiO3,0.2,[l/mmol],3.78,[mmol/g],2.00E+02,3.78E+00,"Ind. Eng. Chem. Res. 2018, 57, 8381?8387",10.1021/acs.iecr.8b00805,"1. I'm unable to find the full name of H2TiO3 in this work. (I really want to call it Titanic acid :P)
+2. The adsorbent seems to be in powder form - can it be classified as an 'emerging nanomaterial' for our paper?
+3. I think we should cite this paper because it talks about recovery of Li from shale gas water"
+d,PVBC-g-PGMA-CE,0.0341,[l/mg],4.76,[mg/g],2.37E+02,6.86E-01,Chemical Engineering Journal 380 (2020) 122495,https://doi.org/10.1016/j.cej.2019.122495,--
+e,SMO-b (MnO2 ion-sieve),257.7319588,[l/mol],2.43,[mmol/g],2.58E+02,2.43E+00,Chemical Engineering Science 62 (2007) 4869–4874,10.1016/j.ces.2007.01.016,"1. Ensure to convert K for consistent units
+2. This work is from 2007, can it be considered 'recent' / 'emerging' ?"
+f,Fe3O4 @ SiO2 @ IIP,0.64,[l/mmol],0.596,[mmol/g],6.40E+02,5.96E-01,"ACS Sustainable Chem. Eng. 2015, 3, 460?467",10.1021/sc500659h,1. Crittenden paper
