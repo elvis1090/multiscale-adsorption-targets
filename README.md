@@ -9,10 +9,10 @@ Department of Chemical and Biomolecular Engineering
 University of Notre Dame, Notre Dame, IN 46556
 
 ## Model function
-
+```multiscale_adsorption_target_models.py``` contains the model and workflow functions necessary to generate the results and figures in this manuscript.
 
 ## Pb remediation case study
-```multiscale_adsorption_target_models.py``` contains the model and workflow functions necessary to generate the results and figures in this manuscript.
+```Pb_remediation.ipynb``` contains the scripts to generate results and figures for the Pb remediation case study in the manuscript. This script uses the data file 'sorbent_prop.csv' to load properties of existing adsorbents.
 
 ## Li recovery case study
 ```Li_recovery.ipynb``` contains the scripts to generate results and figures for the Li recovery case study in the manuscript. This script uses the data file 'lithium_adsorbents_2.csv' to load properties of existing adsorbents.
