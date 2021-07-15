@@ -1,5 +1,7 @@
 # multiscale-adsorption-targets
 
+**Plots for presentations**
+
 ## Material property targets to enable adsorptive water treatment and resource recovery systems
 
 Elvis A. Eugene, William A. Phillip, Alexander W. Dowling
