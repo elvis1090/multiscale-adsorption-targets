@@ -127,3 +127,7 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+*.csv
+Pb_case1membrane.png
+Pb_case1membrane_present1.png
+*.png

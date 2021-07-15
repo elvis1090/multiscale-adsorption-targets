@@ -1870,7 +1870,7 @@ pb_labels=None,combined_plot=False, mem_Qmax_labels=None, plot_type=3):
     dpi_fig: pixel density [dpi], float scalar
     print_level: verbosity of console outputs, integer scalar
     dimensionless: Flag to toggle dimensionless plots on and off
-    plot_type: Toggle for plot type for presentations to enable slow buildup, int (Note 1)
+    plot_type: Toggle for plot type for presentations to enable slow buildup, int, default 3 (Note 1)
 
     returns
     fig, ax: matplotlib figure and axis objects with plots of lithium recovery targets with dimensions
@@ -2072,6 +2072,14 @@ pb_labels=None,combined_plot=False, mem_Qmax_labels=None, plot_type=3):
     # legend
     # ncol=3
     ncol = 2
+
+    # format legend
+    # for plot_type = 1, add 2 labels to the legend to generate figures of equal
+    # sizes
+    if plot_type == 1:
+        plt.plot([],[],label='filler1')
+        plt.plot([],[],label='filler2')
+    # end
 
     ## row major legend (print across columns)
     handles, labels = ax.get_legend_handles_labels()
