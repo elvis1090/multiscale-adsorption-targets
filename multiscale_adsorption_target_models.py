@@ -2075,7 +2075,8 @@ pb_labels=None,combined_plot=False, mem_Qmax_labels=None, plot_type=3):
 
     # format legend
     # for plot_type = 1, add 2 labels to the legend to generate figures of equal
-    # sizes
+    # sizes. the actual label does not matter since it will be hidden during the
+    # post processing of the figure in powerpoint
     if plot_type == 1:
         plt.plot([],[],label='filler1')
         plt.plot([],[],label='filler2')
