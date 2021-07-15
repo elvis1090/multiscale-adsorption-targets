@@ -1848,7 +1848,7 @@ path=None, casename=None):
 def plot_lead_targets(K, QC_Pb, K_qmax, qmax, m_mem_matrix, cin_Pb, eps, v_total,
 t_total, path, title, rho_mat = 1, plot_batch=False, QB_Pb=None, ls = ['--', ':','-.', (0, (1, 10))],
 w_in=3., h_in=4.0, dpi_fig=1200, print_level=0, dimensionless=False, pbed_qmax_path=None,
-pb_labels=None,combined_plot=False, mem_Qmax_labels=None):
+pb_labels=None,combined_plot=False, mem_Qmax_labels=None, plot_type=3):
     '''
     inputs
     K: vector of dimensionless binding affinity values used to calculate saturation capacity targets [-], float numpy array
@@ -1870,13 +1870,17 @@ pb_labels=None,combined_plot=False, mem_Qmax_labels=None):
     dpi_fig: pixel density [dpi], float scalar
     print_level: verbosity of console outputs, integer scalar
     dimensionless: Flag to toggle dimensionless plots on and off
+    plot_type: Toggle for plot type for presentations to enable slow buildup, int (Note 1)
 
     returns
     fig, ax: matplotlib figure and axis objects with plots of lithium recovery targets with dimensions
 
 
     NOTES
-
+    Note 1:
+    1: only solid capacity vs affinity lines
+    2: add dashed / dotted material constraints to v1
+    3: add x for existing sorbents
     '''
 
     if print_level >= 3:
@@ -1965,8 +1969,10 @@ pb_labels=None,combined_plot=False, mem_Qmax_labels=None):
             QCplot = QC_Pb[:,j] # [-]
         # END convert from dimensionless to with units if required
 
-        # plot property targets
-        line = plt.loglog(Kplot, QCplot, label=label)
+        # plot property targets for type 1 (and greater) plots
+        if plot_type >= 1:
+            line = plt.loglog(Kplot, QCplot, label=label)
+        # end
 
         if plot_batch:
 
@@ -1995,10 +2001,12 @@ pb_labels=None,combined_plot=False, mem_Qmax_labels=None):
             Q_y = Q_y/cin_Li
         # end dimensionless conversion
 
-        # plot
-        plt.contour(K_x,Q_y,lub_bar,levels=[1e-2,1e-1],colors=['b','b'],linestyles=['--',':'])
-        plt.plot([],[],'b--',label=r'$\overline{l_{ub}}$=1%')
-        plt.plot([],[],'b:',label=r'$\overline{l_{ub}}$=10%')
+        # plot packed bed contours for type 2 (and greater) plots
+        if plot_type >= 2:
+            plt.contour(K_x,Q_y,lub_bar,levels=[1e-2,1e-1],colors=['b','b'],linestyles=['--',':'])
+            plt.plot([],[],'b--',label=r'$\overline{l_{ub}}$=1%')
+            plt.plot([],[],'b:',label=r'$\overline{l_{ub}}$=10%')
+        # end
         # plt.plot
     else:
         # plot membrane contours
@@ -2025,20 +2033,24 @@ pb_labels=None,combined_plot=False, mem_Qmax_labels=None):
                 K_qmax_plot = K_qmax[i,:]*cin_Li # [-]
             # END convert from dimensionless to with units if required
 
-            # plot
-            plt.loglog(K_qmax_plot,qmax_plot,'k',linestyle=ls[i],label=label_fmt)
-            # plt.loglog(K_qmax[i,:],qmax[i,:],'k',linestyle=ls[i],label='Regen every {0} {1}'.format(time_val,time_unit))
+            # plot membrane contours for type 2 (and greater) plots
+            if plot_type >= 2:
+                plt.loglog(K_qmax_plot,qmax_plot,'k',linestyle=ls[i],label=label_fmt)
+            # end
         # loop over membrane thicknesses and plot Qmax lines
     # plot membrane contours
 
-    # plot lead adsorbent data
-    for k in range(len(Pb_sorb_Ks)):
-        # letters of the alphabet markers
-        # plt.loglog(li_Ks[k],li_Qs[k],'k',marker='${0}$'.format(li_legend[k]),markersize=8)
+    # plot lead adsorbent data for type 3 (or greater) plots
+    if plot_type >= 3:
 
-        # dots as markers
-        plt.loglog(Pb_sorb_Ks[k],Pb_sorb_Qs[k],'kx',markersize=3)
-    # END plot Li adsorbent data
+        for k in range(len(Pb_sorb_Ks)):
+            # letters of the alphabet markers
+            # plt.loglog(li_Ks[k],li_Qs[k],'k',marker='${0}$'.format(li_legend[k]),markersize=8)
+
+            # dots as markers
+            plt.loglog(Pb_sorb_Ks[k],Pb_sorb_Qs[k],'kx',markersize=3)
+        # END plot Li adsorbent data
+    # end
 
     # make plots pretty
 
