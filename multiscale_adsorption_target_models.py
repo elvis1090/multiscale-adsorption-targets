@@ -1198,26 +1198,29 @@ mem_Qmax_labels=None):
     rho_mem = (1-eps)*rho_mat # [g/cm3]
 
     ## Existing lithium adsorbents
-    # read existing Li adsorbent data
-    li_adsorbent_data = pd.read_csv(path)
-    # separate into meaningful variables
-    li_Ks = li_adsorbent_data['K [cm3/mmol_Li]'].to_numpy() # cm3/mmol
-    li_Qs = li_adsorbent_data['Q [mmol_Li/cm3_ads]'].to_numpy() # mmol/cm3
-    # convert Q to mmol/g
-    li_Qs = li_Qs/rho_mat # [mmol/g]
 
-    # convert to dimensionless variables if required
-    if dimensionless:
-        li_Ks = li_Ks*cin_Li # [-]
-        li_Qs = li_Qs*rho_mat/cin_Li # [-]
+    if path:
+        # read existing Li adsorbent data
+        li_adsorbent_data = pd.read_csv(path)
+        # separate into meaningful variables
+        li_Ks = li_adsorbent_data['K [cm3/mmol_Li]'].to_numpy() # cm3/mmol
+        li_Qs = li_adsorbent_data['Q [mmol_Li/cm3_ads]'].to_numpy() # mmol/cm3
+        # convert Q to mmol/g
+        li_Qs = li_Qs/rho_mat # [mmol/g]
 
-        if print_level >= 3:
-            print("li_Ks:",li_Ks)
-            print("li_Qs:",li_Qs)
-        # END
-    # END conversion to dimensionless variables
+        # convert to dimensionless variables if required
+        if dimensionless:
+            li_Ks = li_Ks*cin_Li # [-]
+            li_Qs = li_Qs*rho_mat/cin_Li # [-]
 
-    li_legend = li_adsorbent_data['Legend'].tolist() # -
+            if print_level >= 3:
+                print("li_Ks:",li_Ks)
+                print("li_Qs:",li_Qs)
+            # END
+        # END conversion to dimensionless variables
+
+        li_legend = li_adsorbent_data['Legend'].tolist() # -
+    # end existing sorbents plot if needed
 
     # create matplotlib objects
     fig, ax = plt.subplots(figsize=(w_in,h_in),dpi=dpi_fig)
@@ -1362,44 +1365,19 @@ mem_Qmax_labels=None):
         # loop over regeneration times and plot Qmax lines
     # end plotting qmax lines
 
-    # plot Li adsorbent data
-    for k in range(len(li_legend)):
-        # letters of the alphabet markers
-        # plt.loglog(li_Ks[k],li_Qs[k],'k',marker='${0}$'.format(li_legend[k]),markersize=8)
+    # plot Li adsorbent data if provided
+    if path:
 
-        # dots as markers
-        plt.loglog(li_Ks[k],li_Qs[k],'kx',markersize=3)
-    # END plot Li adsorbent data
+        for k in range(len(li_legend)):
+            # letters of the alphabet markers
+            # plt.loglog(li_Ks[k],li_Qs[k],'k',marker='${0}$'.format(li_legend[k]),markersize=8)
 
-    # # plot Packed Bed contours
-    # if pbed_qmax_path:
-    #
-    #     # pb_linestyles = ['r--','b--','m--']
-    #     # fig_pb, ax_pb = plt.subplots(figsize=(w_in,h_in),dpi=dpi_fig)
-    #     # plt.xscale('log')
-    #     # plt.yscale('log')
-    #
-    #     # read contour data
-    #     K_x = np.loadtxt(pbed_qmax_path+'K_x.csv',delimiter=',')
-    #     Q_y = np.loadtxt(pbed_qmax_path+'Q_y.csv',delimiter=',')
-    #     lub_bar = np.loadtxt(pbed_qmax_path+'lub_bar.csv',delimiter=',')
-    #
-    #     # convert to dimensionless coordinates if required
-    #     if dimensionless:
-    #         K_x = K_x*cin_Li
-    #         Q_y = Q_y/cin_Li
-    #     # end dimensionless conversion
-    #
-    #     # plot
-    #     plt.contour(K_x,Q_y,lub_bar,levels=[1e-2,1e-1],colors=['b','b'],linestyles=['--',':'])
-    #     plt.plot([],[],'b--',label=r'$\overline{l_{ub}}$=1%')
-    #     plt.plot([],[],'b:',label=r'$\overline{l_{ub}}$=10%')
-    #     # plt.plot
-    #
-    # # plot Packed Bed contours
+            # dots as markers
+            plt.loglog(li_Ks[k],li_Qs[k],'kx',markersize=3)
+        # END plot Li adsorbent data
+    # End if
 
     # make plots pretty
-
     # choose axis labels based on type of plot
     if not dimensionless:
         plot_xlabel = r"$\mathbf{K}$ (cm$\mathbf{^3}$ mmol$\mathbf{^{-1}}$)"
@@ -1415,25 +1393,12 @@ mem_Qmax_labels=None):
     # square aspect ratio
     set_aspect_ratio_log(ax, 1.0)
 
-    # ticklabels and axis limits
-    # plt.xlim(1e-2,1e7)
-    # plt.ylim(1e-2,1e3)
-    # ax.set_yticks([1e-2,1e-1,1e0,1e1,1e2,1e3])
-    # ax.set_xticks([1e-2,1e0,1e2,1e4,1e6,1e8])
-
     # legend
     # ncol=3
     ncol = 2
 
     ## row major legend (print across columns)
     handles, labels = ax.get_legend_handles_labels()
-    # handles = flip(handles, ncol)
-    # labels = flip(labels, ncol)
-
-    # formatting for 3 column legened
-    # plt.legend(handles, labels, loc='upper center',borderaxespad=0.,ncol=ncol,
-    # fontsize=10, bbox_to_anchor=(0.35,-0.23),
-    # handletextpad=0.5,columnspacing=0.5,framealpha=1.0,title='Mass of Li recovered:Mass of membrane')
 
     # formatting for 2 column legend
     plt.legend(handles, labels, loc='upper center',borderaxespad=0.,ncol=ncol,
@@ -1448,6 +1413,306 @@ mem_Qmax_labels=None):
 
     return fig, ax
 # END plot_lithium_targets()
+
+def plot_copper_targets(K, QC_Li, K_qmax, qmax, m_mem_ratio_matrix, cin_Li, eps, t_total,
+path, title, plot_batch=False, QB_Li=None, ls = ['--', ':','-.', (0, (1, 10))],
+w_in=3., h_in=4.0, dpi_fig=1200, print_level=0, dimensionless=False,pbed_qmax_path=None,
+pore_underlimit_path=None,delP_overlimit_path=None,pb_labels=None,combined_plot=False,
+mem_Qmax_labels=None):
+    '''
+    inputs
+    K: vector of dimensionless binding affinity values used to calculate saturation capacity targets [-], float numpy array
+    QC_Li: dimensionless saturation capacity targets for a semicontinuous process corresponding to K [-], float numpy array
+    K_qmax: vector of binding affinities corresponding to qmax [cm3/mmol], float numpy array
+    qmax: upper bound of saturation capacity for the given system [mmol/g], float numpy array, NOTE 1
+    m_mem_ratio_matrix: quantity of membrane to be used for every unit of lithium recovered, integer numpy array, NOTE 3
+    cin_Li: concentration of lithium in feed [mmol/cm3], float scalar
+    eps: Porosity of the membrane [-], float scalar
+    t_total: time to regeneration [s], float numpy array
+    path: path at which existing lithium adsorbent data is saved, string
+    title: title for the plot, also used as filename to save plot, string
+    plot_batch: flag to plot batch targets. boolean
+    QB_Li: dimensionless saturation capacity targets for a batch process corresponding to K [-], float numpy array
+    ls: vector of linestyles for Qmax lines, list
+    w_in: figure width [inches], float scalar
+    h_in: figure height [inches], float scalar
+    dpi_fig: pixel density [dpi], float scalar
+    print_level: verbosity of console outputs, integer scalar, NOTE 2
+    dimensionless: Flag to toggle dimensionless plots on and off
+
+    returns
+    fig, ax: matplotlib figure and axis objects with plots of lithium recovery targets with dimensions
+
+
+    NOTES
+    1. system = membrane parameters + operating conditions
+
+    2. 0 is lowest, 3 is highest for reasonable detail,
+    4 will print unreasonably detailed information (think 1000 element floating point numpy arrays)
+
+    3. mass of Li = total mass of Li recovered, not mass of Li recovered before regeneration
+
+    4. This function was duplicated from plot_lithium_targets which is why a lot of the nomenclature
+    with respect to lithium has been carried over.
+    '''
+
+    if print_level >= 3:
+        print('Printing from plot_lithium_targets()')
+    # END print
+
+    if print_level >= 4:
+
+        fig_d0, ax_d0 = plt.subplots()
+        plt.loglog(K,QC_Li)
+        plt.xlabel('K [-]')
+        plt.ylabel('QC_Li [-]')
+        plt.grid(True)
+        plt.savefig(title+'-argument_ref_1.png',dpi=300,bbox_inches='tight')
+        plt.show()
+
+        fig_d1, ax_d1 = plt.subplots()
+        plt.loglog(K_qmax,qmax)
+        plt.xlabel('K_qmax [cm3/mmol]')
+        plt.ylabel('qmax [mmol/g]')
+        plt.grid(True)
+        plt.savefig(title+'-argument_ref_2.png',dpi=300,bbox_inches='tight')
+        plt.show()
+
+        print('m_mem_ratio_matrix = \n',m_mem_ratio_matrix)
+
+        disp_df = pd.DataFrame({'cin_Li [mmol/cm3]':cin_Li,
+        'eps [-]':eps,
+        't_total [s]':t_total,
+        'path':path,
+        'title':title,
+        'plot_batch':plot_batch})
+
+        print(disp_df)
+    # END print
+
+    ## Get membrane parameters
+    # Units: Np [1/m2], mu [Pa s], rho_mem [g/cm3], N_A [1/mmol], v_bar [cm3/mmol],
+    # eps [-], A_mem [m2], sp_thr [m], cin_Pb [mmol/cm3], rho_mat [g/cm3]
+    # __, __, __, __, __, __, __, __, __, rho_mat = get_membrane_model_params(get_rho_mat=True)
+    rho_mat = 1 # [g/cm3] (mat is the solid matrix of the polymer)
+
+    # find updated membrane density based on porosity and matrix density
+    rho_mem = (1-eps)*rho_mat # [g/cm3]
+
+    ## Existing copper adsorbents
+    if path:
+        # read existing Li adsorbent data
+        li_adsorbent_data = pd.read_csv(path)
+        # separate into meaningful variables
+        li_Ks = li_adsorbent_data['K [cm3/mmol_Cu]'].to_numpy() # cm3/mmol
+        li_Qs = li_adsorbent_data['Q [mmol_Cu/g]'].to_numpy() # mmol/g
+
+        # convert to dimensionless variables if required
+        if dimensionless:
+            li_Ks = li_Ks*cin_Li # [-]
+            li_Qs = li_Qs*rho_mat/cin_Li # [-]
+
+            if print_level >= 3:
+                print("cu_Ks:",li_Ks)
+                print("cu_Qs:",li_Qs)
+            # END
+        # END conversion to dimensionless variables
+
+        li_legend = li_adsorbent_data['Legend'].tolist() # -
+    # end existing sorbents plot if needed
+
+    # create matplotlib objects
+    fig, ax = plt.subplots(figsize=(w_in,h_in),dpi=dpi_fig)
+
+    # loop over bed volumes and plot contours
+    for j in range(len(m_mem_ratio_matrix)):
+
+        # make legend entries pretty
+        mpt_ratio = '1:{0:d}'.format(m_mem_ratio_matrix[j])
+
+        # convert from dimensionless to with units if required
+        if not dimensionless:
+            Kplot = K/cin_Li # [cm3/mmol]
+
+            QCplot = QC_Li[:,j]*cin_Li/rho_mat # [mmol/g]
+        else:
+            Kplot = K # [-]
+
+            QCplot = QC_Li[:,j] # [-]
+        # END convert from dimensionless to with units if required
+
+        # plot property targets
+        line = plt.loglog(Kplot, QCplot, label=mpt_ratio)
+
+        if plot_batch:
+
+            # convert from dimensionless to with units if required
+            if not dimensionless:
+                QBplot = QB_Li[:,j]*cin_Li/rho_mat # [mmol/g]
+            else:
+                QBplot = QB_Li[:,j] # [-]
+            # END convert from dimensionless to with units if required
+
+            plt.loglog(Kplot,QBplot,'--',color=line[-1].get_color())
+        # END plot batch targets if required
+
+    # END loop over bed volumes and plot contours
+
+    if combined_plot:
+
+        # plot Packed Bed contours
+        if pbed_qmax_path:
+
+            # pb_linestyles = ['r--','b--','m--']
+            # fig_pb, ax_pb = plt.subplots(figsize=(w_in,h_in),dpi=dpi_fig)
+            # plt.xscale('log')
+            # plt.yscale('log')
+
+            # read contour data
+            K_x = np.loadtxt(pbed_qmax_path+'K_x.csv',delimiter=',')
+            Q_y = np.loadtxt(pbed_qmax_path+'Q_y.csv',delimiter=',')
+            lub_bar = np.loadtxt(pbed_qmax_path+'lub_bar.csv',delimiter=',')
+
+            # convert to dimensionless coordinates if required
+            if dimensionless:
+                K_x = K_x*cin_Li
+                Q_y = Q_y/cin_Li
+            # end dimensionless conversion
+
+            # plot
+            plt.contour(K_x,Q_y,lub_bar,levels=[1e-2,1e-1],colors=['b','b'],linestyles=['--',':'])
+            plt.plot([],[],'b--',label=r'$\overline{l_{ub}}$=1%')
+            plt.plot([],[],'b:',label=r'$\overline{l_{ub}}$=10%')
+            # plt.plot
+
+        if mem_Qmax_labels[0]:
+            # plot membrane contours
+            # loop over membrane thicknesses and plot Qmax lines
+            for i in range(len(mem_Qmax_labels)):
+
+                # convert time into nice legend entries
+                # if mem_Qmax_labels[i] == '1 mm':
+                #     label_fmt = r'$l_b$=1 mm'
+                # elif mem_Qmax_labels[i] == '0.3 mm':
+                #     label_fmt = r'$l_b$=0.3 mm'
+                # # End nice legend
+                label_fmt = r'$l_b$='+mem_Qmax_labels[i]
+
+                # convert from dimensionless to with units if required
+                if not dimensionless:
+                    qmax_plot = qmax[i,:] # [mmol/g]
+
+                    K_qmax_plot = K_qmax[i,:] # [cm3/mmol]
+                else:
+                    qmax_plot = qmax[i,:]*rho_mat/cin_Li # [-]
+
+                    K_qmax_plot = K_qmax[i,:]*cin_Li # [-]
+
+                    # save to file to verify with dry runs
+                    np.savetxt('qmax_plot'+str(i),qmax_plot,delimiter=',')
+                    np.savetxt('K_qmax_plot'+str(i),K_qmax_plot,delimiter=',')
+                # END convert from dimensionless to with units if required
+
+                # plot
+                plt.loglog(K_qmax_plot,qmax_plot,'k',linestyle=ls[i],label=label_fmt)
+                # plt.loglog(K_qmax[i,:],qmax[i,:],'k',linestyle=ls[i],label='Regen every {0} {1}'.format(time_val,time_unit))
+            # loop over membrane thicknesses and plot Qmax lines
+    else:
+        # loop over regeneration times and plot Qmax lines
+        for i in range(len(t_total)):
+
+            # convert time into nice legend entries
+            if (np.round(t_total[i]/3600) < 1):
+                time_val = int(np.round(t_total[i]/60))
+                time_unit = 'min(s)'
+            elif (np.round(t_total[i]/3600) < 24):
+                time_val = int(np.round(t_total[i]/3600))
+                time_unit = 'hour(s)'
+            elif ((np.round(t_total[i]/3600/24) <= 7)):
+                time_val = int(np.round(t_total[i]/3600/24))
+                time_unit = 'day(s)'
+            elif ((np.round(t_total[i]/3600/24/30) < 12)):
+                time_val = int(np.round(t_total[i]/3600/24/30))
+                time_unit = 'month(s)'
+            elif((np.round(t_total[i]/3600/24/30) >= 12)):
+                time_val = int(np.round(t_total[i]/3600/24/30/12))
+                time_unit = 'year(s)'
+            # End nice legend
+
+            # more legend formatting
+            label_1 = r'$t_{bt}$ = '
+            label_2 = '{0} {1}'.format(time_val,time_unit)
+            label = label_1+label_2
+
+            # convert from dimensionless to with units if required
+            if not dimensionless:
+                qmax_plot = qmax[i,:] # [mmol/g]
+
+                K_qmax_plot = K_qmax[i,:] # [cm3/mmol]
+            else:
+                qmax_plot = qmax[i,:]*rho_mat/cin_Li # [-]
+
+                K_qmax_plot = K_qmax[i,:]*cin_Li # [-]
+
+                # save to file to verify with dry runs
+                np.savetxt('qmax_plot'+str(i),qmax_plot,delimiter=',')
+                np.savetxt('K_qmax_plot'+str(i),K_qmax_plot,delimiter=',')
+            # END convert from dimensionless to with units if required
+
+            # plot
+            plt.loglog(K_qmax_plot,qmax_plot,'k',linestyle=ls[i],label=label)
+            # plt.loglog(K_qmax[i,:],qmax[i,:],'k',linestyle=ls[i],label='Regen every {0} {1}'.format(time_val,time_unit))
+        # loop over regeneration times and plot Qmax lines
+    # end plotting qmax lines
+
+    # plot Li adsorbent data if provided
+    if path:
+
+        for k in range(len(li_legend)):
+            # letters of the alphabet markers
+            # plt.loglog(li_Ks[k],li_Qs[k],'kx',marker='${0}$'.format(li_legend[k]),markersize=8)
+
+            # dots as markers
+            plt.loglog(li_Ks[k],li_Qs[k],'kx',markersize=3)
+        # END plot Li adsorbent data
+    # End if
+
+    # make plots pretty
+    # choose axis labels based on type of plot
+    if not dimensionless:
+        plot_xlabel = r"$\mathbf{K}$ (cm$\mathbf{^3}$ mmol$\mathbf{^{-1}}$)"
+        plot_ylabel = r"$\mathbf{Q}$ (mmol / g$\mathbf{^{-1}}$)"
+    else:
+        plot_xlabel = r"$\mathbf{\overline{K}}$"
+        plot_ylabel = r"$\mathbf{\overline{Q}}$"
+    # choose axis labels based on type of plot
+
+    plt.xlabel(plot_xlabel,fontsize=12,fontweight='bold')
+    plt.ylabel(plot_ylabel,fontsize=12,fontweight='bold')
+
+    # square aspect ratio
+    set_aspect_ratio_log(ax, 1.0)
+
+    # legend
+    # ncol=3
+    ncol = 2
+
+    ## row major legend (print across columns)
+    handles, labels = ax.get_legend_handles_labels()
+
+    # formatting for 2 column legend
+    plt.legend(handles, labels, loc='upper center',borderaxespad=0.,ncol=ncol,
+    fontsize=10, bbox_to_anchor=(0.37,-0.23),
+    handletextpad=0.5,columnspacing=0.5,framealpha=1.0)
+
+    plt.grid(True,which='major')
+    # plt.grid(True,which='minor',linewidth=0.5)
+    plt.minorticks_off()
+
+    plt.savefig(title+'.png',bbox_inches='tight')
+
+    return fig, ax
+# END plot_copper_targets()
 
 def make_log_contourplot(x,y,z,xlabel,ylabel,zlabel,outlines=None,plot_existing=False,
                          K_exist=None,Q_exist=None,save=None):

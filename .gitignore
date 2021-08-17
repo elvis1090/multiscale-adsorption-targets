@@ -131,3 +131,7 @@ dmypy.json
 Pb_case1membrane.png
 Pb_case1membrane_present1.png
 *.png
+K_qmax_plot0
+K_qmax_plot1
+qmax_plot0
+qmax_plot1
